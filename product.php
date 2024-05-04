@@ -33,28 +33,35 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product</title>
     <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .card {
             width: 18rem;
             margin: 10px;
+            border: 1px solid #ced4da; /* Add border */
+            border-radius: 8px; /* Add border radius */
         }
         .navbar {
-            background-color: #87CEEB; /* Light Blue Color */
-        }
-        .navbar-brand img {
-            height: 50px;
-            width: auto;
-        }
-        .navbar-nav {
-            margin-left: auto;
-        }
-        .navbar-nav .nav-link {
-            color: #ffffff;
-            margin-left: 10px;
-        }
-        .jumbotron {
-            background-color: #f8f9fa;
+        background-color: #ffffff; /* White Color */
+    }
+    .navbar-brand img {
+        height: 50px;
+        width: auto;
+    }
+    .navbar-nav {
+        margin-left: auto;
+    }
+    .navbar-nav .nav-link {
+        color: #000000; /* Black Color */
+        margin-left: 10px;
+    }
+    .jumbotron {
+        background-color: #f8f9fa;
+    }
+    .btn-light-blue {
+            background-color: #ADD8E6; /* Light blue color */
+            color: #fff; /* Text color */
         }
     </style>
 </head>
@@ -103,29 +110,39 @@ $conn->close();
         </div>
     </div>
 </nav>
+
 <div class="container">
-    <div class="row">
-        <?php foreach ($items as $item): ?>
-            <div class="col">
-                <div class="card border-0">
-                    <img src="images/item<?php echo $item['item_id']; ?>.jpeg" class="card-img-top" alt="Item Image">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $item['name']; ?></h5>
-                        <p class="card-text"><?php echo $item['description']; ?></p>
-                        <form action="add_to_cart.php" method="post">
-                            <div class="mb-3">
-                                <label for="quantity" class="form-label">Quantity:</label>
-                                <input type="number" class="form-control" id="quantity" name="quantity" value="1">
-                            </div>
-                            <input type="hidden" name="item_id" value="<?php echo $item['item_id']; ?>">
-                            <button type="submit" class="btn btn-primary">Add to Cart</button>
-                        </form>
+    <?php 
+        // Splitting items array into chunks of 3
+        $chunks = array_chunk($items, 3);
+        
+        // Loop through each chunk
+        foreach ($chunks as $chunk): 
+    ?>
+        <div class="row">
+            <?php foreach ($chunk as $item): ?>
+                <div class="col">
+                    <div class="card border-0" style="background-color: #E6FBFA;"> <!-- Set grey background color -->
+                        <div class="card-body">
+                        <img src="images/item<?php echo $item['item_id']; ?>.jpeg" class="card-img-top" alt="Item Image">
+                            <h5 class="card-title"><?php echo $item['name']; ?></h5>
+                            <p class="card-text"><?php echo $item['description']; ?></p>
+                            <form action="add_to_cart.php" method="post">
+                                <div class="mb-3">
+                                    <label for="quantity" class="form-label">Quantity:</label>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" value="1">
+                                </div>
+                                <input type="hidden" name="item_id" value="<?php echo $item['item_id']; ?>">
+                                <button type="submit" class="btn btn-light-blue">Add to Cart</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
 </div>
+
 
 </body>
 </html>

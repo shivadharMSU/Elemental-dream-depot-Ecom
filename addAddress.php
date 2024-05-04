@@ -22,15 +22,28 @@ if (isset($_GET['logout'])) {
 // Include database connection
 include 'db_connection.php';
 
-// Fetch products from the database
-$sql = "SELECT * FROM product";
-$result = $conn->query($sql);
-$products = array();
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $products[] = $row;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if all form fields are filled
+    if (isset($_POST["address"]) && isset($_POST["city"]) && isset($_POST["state"]) && isset($_POST["zipCode"])) {
+        $shopper_id = $_SESSION["shopper_id"];
+        $address = $_POST["address"];
+        $city = $_POST["city"];
+        $state = $_POST["state"];
+        $zipCode = $_POST["zipCode"];
+
+        // SQL to insert the new address into the database
+        $sql_insert = "INSERT INTO shopper_address (shopper_id, address, city, state, zipCode) VALUES ('$shopper_id', '$address', '$city', '$state', '$zipCode')";
+
+        if ($conn->query($sql_insert) === TRUE) {
+            // Address added successfully, redirect to manageAddress.php
+            header("location: manageAddress.php");
+            exit;
+        } else {
+            echo "Error adding address: " . $conn->error;
+        }
     }
 }
+
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -38,7 +51,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Add Address</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -81,9 +94,7 @@ $conn->close();
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <?php foreach($products as $product): ?>
-                          
-<li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_name']; ?></a></li>
-
+                            <li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_name']; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -109,17 +120,27 @@ $conn->close();
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="jumbotron">
-                <h1 class="display-4">Welcome to Our E-Commerce Website</h1>
-                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel libero velit. Integer volutpat est quis lorem volutpat, sed posuere sapien viverra. Integer vehicula mi at nunc varius, ac dapibus sapien placerat.</p>
-                <hr class="my-4">
-                <p>Nulla nec suscipit odio. Suspendisse non ante nec justo tempor iaculis. Vestibulum sagittis purus id eleifend vehicula.</p>
-            </div>
+<div class="container">
+    <h1>Add Address</h1>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address" required>
         </div>
-    </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" name="city" required>
+        </div>
+        <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <input type="text" class="form-control" id="state" name="state" required>
+        </div>
+        <div class="mb-3">
+            <label for="zipCode" class="form-label">Zip Code</label>
+            <input type="text" class="form-control" id="zipCode" name="zipCode" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Address</button>
+    </form>
 </div>
 
 <!-- Bootstrap JavaScript -->

@@ -22,15 +22,13 @@ if (isset($_GET['logout'])) {
 // Include database connection
 include 'db_connection.php';
 
-// Fetch products from the database
-$sql = "SELECT * FROM product";
-$result = $conn->query($sql);
-$products = array();
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $products[] = $row;
-    }
+// Fetch shopper's addresses from the database based on their shopper ID
+if (isset($_SESSION["shopper_id"])) {
+    $shopper_id = $_SESSION["shopper_id"];
+    $sql_address = "SELECT * FROM shopper_address WHERE shopper_id = $shopper_id";
+    $result_address = $conn->query($sql_address);
 }
+
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -81,9 +79,7 @@ $conn->close();
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <?php foreach($products as $product): ?>
-                          
-<li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_name']; ?></a></li>
-
+                            <li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_name']; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -109,17 +105,28 @@ $conn->close();
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="jumbotron">
-                <h1 class="display-4">Welcome to Our E-Commerce Website</h1>
-                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel libero velit. Integer volutpat est quis lorem volutpat, sed posuere sapien viverra. Integer vehicula mi at nunc varius, ac dapibus sapien placerat.</p>
-                <hr class="my-4">
-                <p>Nulla nec suscipit odio. Suspendisse non ante nec justo tempor iaculis. Vestibulum sagittis purus id eleifend vehicula.</p>
-            </div>
-        </div>
-    </div>
+<div class="container">
+    <h1>Manage Addresses</h1>
+    <?php if ($result_address->num_rows > 0): ?>
+        <ul class="list-group">
+            <?php while ($row_address = $result_address->fetch_assoc()): ?>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col"><?php echo $row_address['address'] . ', ' . $row_address['city'] . ', ' . $row_address['state'] . ', ' . $row_address['zipCode']; ?></div>
+                        <div class="col-auto">
+                            <a href="edit_address.php?address_id=<?php echo $row_address['address_id']; ?>" class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i> Edit</a>
+                            <!-- <button type="button" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Delete</button> -->
+                            <a href="deleteAddress.php?address_id=<?php echo $row_address['address_id']; ?>" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Delete</a>
+
+                        </div>
+                    </div>
+                </li>
+            <?php endwhile; ?>
+        </ul>
+    <?php else: ?>
+        <p>No addresses found.</p>
+    <?php endif; ?>
+    <button type="button" class="btn btn-primary mt-3"><i class="bi bi-plus"></i> Add Address</button>
 </div>
 
 <!-- Bootstrap JavaScript -->

@@ -22,15 +22,16 @@ if (isset($_GET['logout'])) {
 // Include database connection
 include 'db_connection.php';
 
-// Fetch products from the database
-$sql = "SELECT * FROM product";
-$result = $conn->query($sql);
-$products = array();
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $products[] = $row;
+// Fetch address details based on address ID passed in the URL
+if (isset($_GET["address_id"])) {
+    $address_id = $_GET["address_id"];
+    $sql_fetch_address = "SELECT * FROM shopper_address WHERE address_id = $address_id";
+    $result_fetch_address = $conn->query($sql_fetch_address);
+    if ($result_fetch_address->num_rows > 0) {
+        $row_address = $result_fetch_address->fetch_assoc();
     }
 }
+
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -38,7 +39,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Edit Address</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -81,9 +82,7 @@ $conn->close();
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <?php foreach($products as $product): ?>
-                          
-<li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_name']; ?></a></li>
-
+                            <li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_name']; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 </li>
@@ -109,17 +108,28 @@ $conn->close();
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="jumbotron">
-                <h1 class="display-4">Welcome to Our E-Commerce Website</h1>
-                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel libero velit. Integer volutpat est quis lorem volutpat, sed posuere sapien viverra. Integer vehicula mi at nunc varius, ac dapibus sapien placerat.</p>
-                <hr class="my-4">
-                <p>Nulla nec suscipit odio. Suspendisse non ante nec justo tempor iaculis. Vestibulum sagittis purus id eleifend vehicula.</p>
-            </div>
+<div class="container">
+    <h1>Edit Address</h1>
+    <form action="update_address.php" method="post">
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address" value="<?php echo $row_address['address']; ?>">
         </div>
-    </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" name="city" value="<?php echo $row_address['city']; ?>">
+        </div>
+        <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <input type="text" class="form-control" id="state" name="state" value="<?php echo $row_address['state']; ?>">
+        </div>
+        <div class="mb-3">
+            <label for="zipCode" class="form-label">Zip Code</label>
+            <input type="text" class="form-control" id="zipCode" name="zipCode" value="<?php echo $row_address['zipCode']; ?>">
+        </div>
+        <input type="hidden" name="address_id" value="<?php echo $row_address['address_id']; ?>">
+        <button type="submit" class="btn btn-primary">Update Address</button>
+    </form>
 </div>
 
 <!-- Bootstrap JavaScript -->

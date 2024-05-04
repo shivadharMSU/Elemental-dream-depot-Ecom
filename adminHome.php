@@ -18,21 +18,8 @@ function logout() {
 if (isset($_GET['logout'])) {
     logout();
 }
-
-// Include database connection
-include 'db_connection.php';
-
-// Fetch products from the database
-$sql = "SELECT * FROM product";
-$result = $conn->query($sql);
-$products = array();
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $products[] = $row;
-    }
-}
-$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,6 +47,17 @@ $conn->close();
     .jumbotron {
         background-color: #f8f9fa;
     }
+    .card {
+        max-width: 300px;
+        margin: 20px;
+    }
+    .card-body {
+        text-align: center;
+    }
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
 </style>
 </head>
 <body>
@@ -75,27 +73,20 @@ $conn->close();
                 <li class="nav-item">
                     <a class="nav-link" href="#">Home</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Products
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <?php foreach($products as $product): ?>
-                          
-<li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_name']; ?></a></li>
-
-                        <?php endforeach; ?>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Manage Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Order</a>
+                    <a class="nav-link" href="#">Manage Items</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Manage Employee</a>
+                </li>
+                
             </ul>
             <ul class="navbar-nav ml-auto">
                 <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-cart4"></i> Cart</a>
-                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="?logout=true">Logout</a>
                 </li>
@@ -109,20 +100,44 @@ $conn->close();
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div class="jumbotron">
-                <h1 class="display-4">Welcome to Our E-Commerce Website</h1>
-                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel libero velit. Integer volutpat est quis lorem volutpat, sed posuere sapien viverra. Integer vehicula mi at nunc varius, ac dapibus sapien placerat.</p>
-                <hr class="my-4">
-                <p>Nulla nec suscipit odio. Suspendisse non ante nec justo tempor iaculis. Vestibulum sagittis purus id eleifend vehicula.</p>
+<div class="container">
+    <div class="left-section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Manage Products</h5>
+                <p class="card-text">Click here to manage products.</p>
+                <a href="manage_products.php" class="card-link btn btn-primary">Go to Manage</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Manage Items</h5>
+                <p class="card-text">Click here to manage items.</p>
+                <a href="manage_items.php" class="card-link btn btn-primary">Go to Manage</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Manage Orders</h5>
+                <p class="card-text">Click here to manage orders.</p>
+                <a href="manage_orders.php" class="card-link btn btn-primary">Go to Manage</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Manage Employees</h5>
+                <p class="card-text">Click here to manage employees.</p>
+                <a href="manage_employees.php" class="card-link btn btn-primary">Go to Manage</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

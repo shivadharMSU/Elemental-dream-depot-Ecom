@@ -36,22 +36,22 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         .navbar {
-            background-color: #87CEEB; /* Light Blue Color */
-        }
-        .navbar-brand img {
-            height: 50px;
-            width: auto;
-        }
-        .navbar-nav {
-            margin-left: auto;
-        }
-        .navbar-nav .nav-link {
-            color: #ffffff;
-            margin-left: 10px;
-        }
-        .jumbotron {
-            background-color: #f8f9fa;
-        }
+        background-color: #ffffff; /* White Color */
+    }
+    .navbar-brand img {
+        height: 50px;
+        width: auto;
+    }
+    .navbar-nav {
+        margin-left: auto;
+    }
+    .navbar-nav .nav-link {
+        color: #000000; /* Black Color */
+        margin-left: 10px;
+    }
+    .jumbotron {
+        background-color: #f8f9fa;
+    }
     </style>
 </head>
 <body>
