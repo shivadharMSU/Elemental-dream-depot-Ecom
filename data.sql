@@ -98,7 +98,8 @@ CREATE TABLE `orders` (
   `shopper_id` int(11) DEFAULT NULL,
   `total_price` double DEFAULT NULL,
   `order_date` varchar(100) DEFAULT NULL,
-  `address_id` int(10) DEFAULT NULL
+  `address_id` int(10) DEFAULT NULL,
+  `payment_method` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -370,8 +371,6 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `shopper_address`
   ADD CONSTRAINT `shopper_adderss` FOREIGN KEY (`shopper_id`) REFERENCES `shoppers` (`shopper_id`);
-COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
