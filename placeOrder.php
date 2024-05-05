@@ -13,7 +13,8 @@ include 'db_connection.php';
 
 // Get shopper_id from session
 $shopper_id = $_SESSION["shopper_id"];
-
+$address_id = $_POST["address_id"];
+$payment_method = $_POST["payment_method"];
 // Get current date
 $order_date = date("Y-m-d");
 
@@ -25,9 +26,9 @@ $stmt_cart->execute();
 $result_cart = $stmt_cart->get_result();
 
 // Insert data into orders table
-$sql_insert_order = "INSERT INTO orders (shopper_id, order_date) VALUES (?, ?)";
+$sql_insert_order = "INSERT INTO orders (shopper_id, order_date,address_id, payment_method) VALUES (?, ?, ?, ?)";
 $stmt_insert_order = $conn->prepare($sql_insert_order);
-$stmt_insert_order->bind_param("is", $shopper_id, $order_date);
+$stmt_insert_order->bind_param("isis", $shopper_id, $order_date,$address_id,$payment_method);
 $stmt_insert_order->execute();
 
 // Get the auto-generated order_id

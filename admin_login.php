@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is already logged in, redirect to index.php
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: index.php");
+    header("location: adminHome.php");
     exit;
 }
 
@@ -63,7 +63,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $user_name;                            
                             
                             // Redirect user to index.php
-                            header("location: index.php");
+                            header("location: adminHome.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
@@ -118,6 +118,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
                     </form>
                 </div>
+                <p class="mt-3 text-center">Register here? <a href="adminRegister.php">Admin register</a></p>
             </div>
         </div>
     </div>

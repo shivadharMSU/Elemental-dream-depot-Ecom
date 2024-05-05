@@ -63,7 +63,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $username;                            
                             
                             // Redirect user to index.php
-                            header("location: index.php");
+                            header("location: home.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
@@ -118,6 +118,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
                     </form>
                 </div>
+                <p class="mt-3 text-center">Don't have an account? <a href="register.php">Register here</a></p>
+                <p class="mt-3 text-center">Are you admin? <a href="admin_login.php">admin</a></p>
             </div>
         </div>
     </div>

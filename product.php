@@ -10,7 +10,7 @@ if(isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
 
     // Fetch items based on product_id from the database
-    $sql = "SELECT * FROM Item WHERE product_id = ?";
+    $sql = "SELECT * FROM item WHERE product_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
@@ -66,16 +66,17 @@ $conn->close();
     </style>
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="images/logo.jpeg" alt="Logo"></a>
+        <a class="navbar-brand" href="home.php"><img src="images/logo.jpeg" alt="Logo"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="home.php">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -83,8 +84,8 @@ $conn->close();
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <?php foreach($products as $product): ?>
-                           <!-- Inside the dropdown menu in the navbar -->
-         <li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_id']; ?></a></li>
+                          
+<li><a class="dropdown-item" href="product.php?product_id=<?php echo $product['product_id']; ?>"><?php echo $product['product_name']; ?></a></li>
 
                         <?php endforeach; ?>
                     </ul>
@@ -96,7 +97,7 @@ $conn->close();
             <ul class="navbar-nav ml-auto">
                 <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-cart4"></i> Cart</a>
+                    <a class="nav-link" href="shoppingCart.php"><i class="bi bi-cart4"></i> Cart</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="?logout=true">Logout</a>
@@ -132,6 +133,8 @@ $conn->close();
                                     <label for="quantity" class="form-label">Quantity:</label>
                                     <input type="number" class="form-control" id="quantity" name="quantity" value="1">
                                 </div>
+                                $product_id
+                                <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
                                 <input type="hidden" name="item_id" value="<?php echo $item['item_id']; ?>">
                                 <button type="submit" class="btn btn-light-blue">Add to Cart</button>
                             </form>

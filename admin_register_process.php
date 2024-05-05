@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //  echo $sql;
     if ($conn->query($sql) === TRUE) {
         // Redirect to login page
-        header("location: adminRegister.php");
+        header("location: admin_login.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;

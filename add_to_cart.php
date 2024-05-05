@@ -14,23 +14,24 @@ if (isset($_POST['item_id'], $_POST['quantity'])) {
     $shopper_id = $_SESSION["shopper_id"];
     $item_id = $_POST['item_id'];
     $quantity = $_POST['quantity'];
+    $product_id = $_POST['product_id'];
     $isOrdered = 0;
 
     // Include database connection
     include 'db_connection.php';
-    echo 'echo jnewn';
+    
     // Prepare and execute the SQL statement to insert into the cart table
     $sql = "INSERT INTO cart (shopper_id, item_id, quantity,is_orderd) VALUES (?, ?, ?,?)";
 
     $stmt = $conn->prepare($sql);
-    echo 'echo jnewn';
+   
     $stmt->bind_param("iiii", $shopper_id, $item_id, $quantity,$isOrdered);
-    echo 'echo jnewn';
+   
     
     if ($stmt->execute()) {
-        echo 'here';
+       
         // Item successfully added to the cart
-        header("location: product.php");
+        header("location: product.php?product_id=$product_id");
     } else {
         // Error occurred while adding item to cart
         echo "Error: Unable to add item to cart.";

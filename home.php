@@ -66,14 +66,14 @@ $conn->close();
 
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="images/logo.jpeg" alt="Logo"></a>
+        <a class="navbar-brand" href="home.php"><img src="images/logo.jpeg" alt="Logo"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="home.php">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -94,7 +94,7 @@ $conn->close();
             <ul class="navbar-nav ml-auto">
                 <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-cart4"></i> Cart</a>
+                    <a class="nav-link" href="shoppingCart.php"><i class="bi bi-cart4"></i> Cart</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="?logout=true">Logout</a>
