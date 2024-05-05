@@ -128,7 +128,9 @@ $conn->close();
     <?php else: ?>
         <p>No addresses found.</p>
     <?php endif; ?>
-    <button type="button" class="btn btn-primary mt-3"><i class="bi bi-plus"></i> Add Address</button>
+    <form action="addAddress.php" method="get">
+    <button type="submit" class="btn btn-primary mt-3"><i class="bi bi-plus"></i> Add Address</button>
+</form>
 </div>
 
 <!-- Bootstrap JavaScript -->

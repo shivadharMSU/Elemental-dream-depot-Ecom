@@ -90,6 +90,9 @@ $conn->close();
                 <li class="nav-item">
                     <a class="nav-link" href="#">Order</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageAddress.php">Manage Address</a>
+                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
