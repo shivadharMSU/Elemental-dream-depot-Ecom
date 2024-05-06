@@ -18,7 +18,7 @@ $payment_method = $_POST["payment_method"];
 $order_date = date("Y-m-d");
 
 
-$sql_cart = "SELECT * FROM cart WHERE shopper_id = ?";
+$sql_cart = "SELECT * FROM cart WHERE shopper_id = ? and is_orderd = 0";
 $stmt_cart = $conn->prepare($sql_cart);
 $stmt_cart->bind_param("i", $shopper_id);
 $stmt_cart->execute();
