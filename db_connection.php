@@ -1,6 +1,6 @@
 <?php
 
-$servername = "localhost"; 
+$servername = "localhost";
 $username = "edduser";
 $password = "edduserpassword";
 $dbname = "elemental_dream_depot";

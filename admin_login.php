@@ -1,101 +1,96 @@
 <?php
 session_start();
 
-// Check if user is already logged in, redirect to index.php
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     header("location: adminHome.php");
     exit;
 }
-
-// Include database connection
 include 'db_connection.php';
 
-// Define variables and initialize with empty values
+
 $username = $password = "";
 $username_err = $password_err = "";
 
-// Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Check if username is empty
-    if(empty(trim($_POST["username"]))){
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    
+    if (empty(trim($_POST["username"]))) {
         $username_err = "Please enter username.";
-    } else{
+    } else {
         $username = trim($_POST["username"]);
     }
+
     
-    // Check if password is empty
-    if(empty(trim($_POST["password"]))){
+    if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter your password.";
-    } else{
+    } else {
         $password = trim($_POST["password"]);
     }
-    
-    // Validate credentials
-    if(empty($username_err) && empty($password_err)){
-        // Prepare a select statement
+
+ 
+    if (empty($username_err) && empty($password_err)) {
+       
         $sql = "SELECT employee_id, user_name, password FROM employee WHERE user_name = ?";
-        
-        if($stmt = $conn->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
+
+        if ($stmt = $conn->prepare($sql)) {
+            
             $stmt->bind_param("s", $param_username);
-            
-            // Set parameters
+
+          
             $param_username = $username;
+
             
-            // Attempt to execute the prepared statement
-            if($stmt->execute()){
-                // Store result
+            if ($stmt->execute()) {
+            
                 $stmt->store_result();
-                
-                // Check if username exists, if yes then verify password
-                if($stmt->num_rows == 1){                    
-                    // Bind result variables
+
+                if ($stmt->num_rows == 1) {
+          
                     $stmt->bind_result($employee_id, $user_name, $hashed_password);
-                    if($stmt->fetch()){
-                        if($password === $hashed_password){
-                            // Password is correct, start a new session
-                            session_start();
+                    if ($stmt->fetch()) {
+                        if ($password === $hashed_password) {
                             
-                            // Store data in session variables
+                            session_start();
+
                             $_SESSION["loggedin"] = true;
                             $_SESSION["employee_id"] = $employee_id;
-                            $_SESSION["username"] = $user_name;                            
-                            
-                            // Redirect user to index.php
+                            $_SESSION["username"] = $user_name;
+
                             header("location: adminHome.php");
-                        } else{
-                            // Display an error message if password is not valid
+                        } else {
                             $password_err = "The password you entered was not valid.";
                         }
                     }
-                } else{
-                    // Display an error message if username doesn't exist
+                } else {
+
                     $username_err = "No account found with that username.";
                 }
-            } else{
+            } else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
 
-            // Close statement
             $stmt->close();
         }
     }
-    
-    // Close connection
+
+
     $conn->close();
 }
 ?>
- 
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <!-- Bootstrap CSS -->
+   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <div class="row justify-content-center mt-5">
@@ -105,12 +100,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" id="username" name="username" value="<?php echo $username; ?>">
+                            <input type="text"
+                                class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>"
+                                id="username" name="username" value="<?php echo $username; ?>">
                             <div class="invalid-feedback"><?php echo $username_err; ?></div>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" id="password" name="password">
+                            <input type="password"
+                                class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>"
+                                id="password" name="password">
                             <div class="invalid-feedback"><?php echo $password_err; ?></div>
                         </div>
                         <div class="text-center">
@@ -123,4 +122,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </div>
     </div>
 </body>
+
 </html>
