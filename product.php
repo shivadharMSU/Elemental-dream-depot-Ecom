@@ -23,7 +23,7 @@ if (isset($_GET['product_id'])) {
         $items = $result->fetch_all(MYSQLI_ASSOC);
     }
 } else {
-    header("location: index.php");
+    header("location: home.php");
     exit;
 }
 
